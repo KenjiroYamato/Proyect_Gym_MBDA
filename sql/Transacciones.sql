@@ -1,4 +1,6 @@
 BEGIN
+    LOCK TABLE MEMBRESIAS IN SHARE MODE;
+
     SAVEPOINT Verificar_Membresias;
 
     UPDATE Membresias
@@ -12,49 +14,10 @@ EXCEPTION
         ROLLBACK TO Verificar_Membresias;
 END;
 
---Prueba
-CREATE OR REPLACE FUNCTION Obtener_Estado_Membresia(IdUsuario NUMBER)
-    RETURN BOOLEAN
-    IS
-    estatus_usuario VARCHAR2(25);
-BEGIN
-    SELECT ESTATUS
-    INTO estatus_usuario
-    FROM MEMBRESIAS
-    WHERE USUARIO = IdUsuario;
-
-    IF estatus_usuario <> 'Activa' THEN
-        RETURN False;
-    END IF;
-    RETURN True;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        RETURN False;
-END Obtener_Estado_Membresia;
-
--- CREATE OR REPLACE FUNCTION Acceso_Sede(IdUsuario NUMBER)
---     RETURN BOOLEAN
---     IS
---     tipo_membresia VARCHAR2(25);
--- BEGIN
---     SELECT TIPO
---     INTO tipo_membresia
---     FROM MEMBRESIAS
---     WHERE USUARIO = IdUsuario;
---
---     IF estatus_usuario <> 'Activa' THEN
---         RETURN False;
---     END IF;
---     RETURN True;
--- EXCEPTION
---     WHEN NO_DATA_FOUND THEN
---         RETURN False;
--- END Obtener_Estado_Membresia;
-
+--Consultar si un usuario puede acceder a una zona
 DECLARE
-    estadoMembresia VARCHAR2(500);
+    estadoMembresia BOOLEAN;
 BEGIN
-    estadoMembresia := Obtener_Estado_Membresia(12345678901234); -- Reemplaza 123 con el ID del usuario que deseas consultar.
-
-
+    estadoMembresia := Acceso_ZONA(12345678901234, 1, 'Zona Principal'); -- Reemplaza 123 con el ID del usuario que deseas consultar.
+    DBMS_OUTPUT.put_line(CASE WHEN estadoMembresia THEN 'TRUE' ELSE 'FALSE' END);
 END;
