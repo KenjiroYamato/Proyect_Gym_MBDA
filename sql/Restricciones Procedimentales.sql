@@ -73,3 +73,25 @@ BEGIN
     INSERT INTO FACTURAS (ID, VALOR, DETALLES, MOMENTOPAGO)
     VALUES (id_Factura, valor_Membresia, 'Sin Novedades.', SYSTIMESTAMP);
 end;
+
+CREATE SEQUENCE SEQ_UID_EVENTOS
+    START WITH 100
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+
+CREATE OR REPLACE TRIGGER TGR_BEFORE_INSERT_EVENT
+    BEFORE INSERT ON EVENTO
+    FOR EACH ROW
+DECLARE
+    cargo_del_lider VARCHAR2(50);
+BEGIN
+    SELECT CARGO INTO cargo_del_lider FROM EMPLEADOS
+        WHERE DOCUMENTO = :NEW.LIDER;
+    IF cargo_del_lider != 'Entrenador' THEN
+        RAISE_APPLICATION_ERROR(-20005, 'Un Evento solo Puede ser Liderado por un Entrenador');
+    end if;
+
+    SELECT SEQ_UID_EVENTOS.nextval INTO :NEW.ID FROM DUAL;
+end;

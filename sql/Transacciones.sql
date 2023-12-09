@@ -14,6 +14,20 @@ EXCEPTION
         ROLLBACK TO Verificar_Membresias;
 END;
 
+BEGIN
+    SAVEPOINT Finalizar_Evento;
+
+    UPDATE EVENTO
+    SET ESTADO = 'Finalizado'
+    WHERE (FECHAYHORA + NUMTODSINTERVAL(DURACION, 'HOUR')) < SYSTIMESTAMP;
+
+    COMMIT;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK TO Finalizar_Evento;
+END;
+
 --Consultar si un usuario puede acceder a una zona
 DECLARE
     estadoMembresia BOOLEAN;
