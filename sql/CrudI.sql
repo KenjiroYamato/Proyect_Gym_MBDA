@@ -266,46 +266,44 @@ END PKG_EMPLEADOS;
 
 CREATE OR REPLACE PACKAGE BODY PKG_SEDES AS
     PROCEDURE CREAR_UBICACION(
-        P_ID           IN NUMBER,
-        P_PAIS         IN VARCHAR2,
-        P_REGION       IN VARCHAR2,
-        P_CIUDAD       IN VARCHAR2,
-        P_DIRECCION    IN VARCHAR2,
-        P_DETALLES     IN VARCHAR2,
+        P_ID IN NUMBER,
+        P_PAIS IN VARCHAR2,
+        P_REGION IN VARCHAR2,
+        P_CIUDAD IN VARCHAR2,
+        P_DIRECCION IN VARCHAR2,
+        P_DETALLES IN VARCHAR2,
         P_CODIGOPOSTAL IN VARCHAR2
     ) IS
     BEGIN
-        INSERT INTO LUGARES VALUES (
-                                       P_ID,
-                                       P_PAIS,
-                                       P_REGION,
-                                       P_CIUDAD,
-                                       P_DIRECCION,
-                                       P_DETALLES,
-                                       P_CODIGOPOSTAL
-                                   );
+        INSERT INTO LUGARES
+        VALUES (P_ID,
+                P_PAIS,
+                P_REGION,
+                P_CIUDAD,
+                P_DIRECCION,
+                P_DETALLES,
+                P_CODIGOPOSTAL);
     END CREAR_UBICACION;
 
     PROCEDURE CREAR_SEDE(
-        P_ID        IN NUMBER,
-        P_NOMBRE    IN VARCHAR2,
+        P_ID IN NUMBER,
+        P_NOMBRE IN VARCHAR2,
         P_UBICACION IN NUMBER
     ) IS
     BEGIN
-        INSERT INTO SEDES VALUES (
-                                     P_ID,
-                                     P_NOMBRE,
-                                     P_UBICACION
-                                 );
+        INSERT INTO SEDES
+        VALUES (P_ID,
+                P_NOMBRE,
+                P_UBICACION);
     END CREAR_SEDE;
 
     PROCEDURE MODIFICAR_SEDE(
-        P_ID        IN NUMBER,
-        P_NOMBRE    IN VARCHAR2
+        P_ID IN NUMBER,
+        P_NOMBRE IN VARCHAR2
     ) IS
     BEGIN
-        UPDATE SEDES SET
-            NOMBRE = P_NOMBRE
+        UPDATE SEDES
+        SET NOMBRE = P_NOMBRE
         WHERE ID = P_ID;
     END MODIFICAR_SEDE;
 
@@ -329,25 +327,24 @@ CREATE OR REPLACE PACKAGE BODY PKG_SEDES AS
     END CONSULTAR_SEDES;
 
     PROCEDURE CREAR_ZONA(
-        P_NOMBRE      IN VARCHAR2,
-        P_SEDE        IN NUMBER,
+        P_NOMBRE IN VARCHAR2,
+        P_SEDE IN NUMBER,
         P_DESCRIPCION IN VARCHAR2
     ) IS
     BEGIN
-        INSERT INTO ZONAS VALUES (
-                                     P_NOMBRE,
-                                     P_SEDE,
-                                     P_DESCRIPCION
-                                 );
+        INSERT INTO ZONAS
+        VALUES (P_NOMBRE,
+                P_SEDE,
+                P_DESCRIPCION);
     END CREAR_ZONA;
 
     PROCEDURE MODIFICAR_ZONA(
-        P_NOMBRE      IN VARCHAR2,
+        P_NOMBRE IN VARCHAR2,
         P_DESCRIPCION IN VARCHAR2
     ) IS
     BEGIN
-        UPDATE ZONAS SET
-            DESCRIPCION = P_DESCRIPCION
+        UPDATE ZONAS
+        SET DESCRIPCION = P_DESCRIPCION
         WHERE NOMBRE = P_NOMBRE;
     END MODIFICAR_ZONA;
 
@@ -364,152 +361,146 @@ CREATE OR REPLACE PACKAGE BODY PKG_SEDES AS
     END ELIMINAR_ZONA;
 
     FUNCTION CREAR_REGISTRO_ELEMENTO(
-        P_ID          IN NUMBER,
-        P_SEDE        IN NUMBER,
-        P_NOMBRE      IN VARCHAR2,
-        P_PRECIO      IN NUMBER,
+        P_ID IN NUMBER,
+        P_SEDE IN NUMBER,
+        P_NOMBRE IN VARCHAR2,
+        P_PRECIO IN NUMBER,
         P_FECHACOMPRA IN DATE,
-        P_TIPO        IN VARCHAR2,
+        P_TIPO IN VARCHAR2,
         P_DESCRIPCION IN VARCHAR2
     ) RETURN SYS_REFCURSOR IS
         REGISTRO_RESULTADO SYS_REFCURSOR;
     BEGIN
-        INSERT INTO INVENTARIO VALUES (
-                                          P_ID,
-                                          P_SEDE,
-                                          P_NOMBRE,
-                                          P_PRECIO,
-                                          P_FECHACOMPRA,
-                                          P_TIPO,
-                                          P_DESCRIPCION
-                                      );
+        INSERT INTO INVENTARIO
+        VALUES (P_ID,
+                P_SEDE,
+                P_NOMBRE,
+                P_PRECIO,
+                P_FECHACOMPRA,
+                P_TIPO,
+                P_DESCRIPCION);
         OPEN REGISTRO_RESULTADO FOR SELECT * FROM INVENTARIO WHERE ID = P_ID;
         RETURN REGISTRO_RESULTADO;
     END CREAR_REGISTRO_ELEMENTO;
 
     PROCEDURE CREAR_REGISTRO_MAQUINA(
-        P_ID          IN NUMBER,
-        P_SEDE        IN NUMBER,
-        P_NOMBRE      IN VARCHAR2,
-        P_PRECIO      IN NUMBER,
+        P_ID IN NUMBER,
+        P_SEDE IN NUMBER,
+        P_NOMBRE IN VARCHAR2,
+        P_PRECIO IN NUMBER,
         P_FECHACOMPRA IN DATE,
-        P_TIPO        IN VARCHAR2,
+        P_TIPO IN VARCHAR2,
         P_DESCRIPCION IN VARCHAR2,
-        P_ESTADO      IN VARCHAR2
+        P_ESTADO IN VARCHAR2
     ) IS
     BEGIN
-        INSERT INTO INVENTARIO VALUES (
-                                          P_ID,
-                                          P_SEDE,
-                                          P_NOMBRE,
-                                          P_PRECIO,
-                                          P_FECHACOMPRA,
-                                          P_TIPO,
-                                          P_DESCRIPCION
-                                      );
-        INSERT INTO MAQUINAS VALUES (
-                                        P_ID,
-                                        P_ESTADO
-                                    );
+        INSERT INTO INVENTARIO
+        VALUES (P_ID,
+                P_SEDE,
+                P_NOMBRE,
+                P_PRECIO,
+                P_FECHACOMPRA,
+                P_TIPO,
+                P_DESCRIPCION);
+        INSERT INTO MAQUINAS
+        VALUES (P_ID,
+                P_ESTADO);
     END CREAR_REGISTRO_MAQUINA;
 
     PROCEDURE MODIFICAR_REGISTRO_ELEMENTO(
-        P_ID          IN NUMBER,
-        P_NOMBRE      IN VARCHAR2,
+        P_ID IN NUMBER,
+        P_NOMBRE IN VARCHAR2,
         P_DESCRIPCION IN VARCHAR2
     ) IS
     BEGIN
-        UPDATE INVENTARIO SET
-                              NOMBRE = P_NOMBRE,
-                              DESCRIPCION = P_DESCRIPCION
+        UPDATE INVENTARIO
+        SET NOMBRE      = P_NOMBRE,
+            DESCRIPCION = P_DESCRIPCION
         WHERE ID = P_ID;
     END MODIFICAR_REGISTRO_ELEMENTO;
 
     PROCEDURE MODIFICAR_REGISTRO_MAQUINA(
-        P_ID          IN NUMBER,
-        P_NOMBRE      IN VARCHAR2,
+        P_ID IN NUMBER,
+        P_NOMBRE IN VARCHAR2,
         P_DESCRIPCION IN VARCHAR2,
-        P_ESTADO      IN VARCHAR2
+        P_ESTADO IN VARCHAR2
     ) IS
     BEGIN
-        UPDATE INVENTARIO SET
-                              NOMBRE = P_NOMBRE,
-                              DESCRIPCION = P_DESCRIPCION
+        UPDATE INVENTARIO
+        SET NOMBRE      = P_NOMBRE,
+            DESCRIPCION = P_DESCRIPCION
         WHERE ID = P_ID;
-        UPDATE MAQUINAS SET
-            ESTADO = P_ESTADO
+        UPDATE MAQUINAS
+        SET ESTADO = P_ESTADO
         WHERE ID = P_ID;
     END MODIFICAR_REGISTRO_MAQUINA;
 END PKG_SEDES;
 
 CREATE OR REPLACE PACKAGE BODY PKG_EVENTOS AS
     PROCEDURE CREAR_EVENTO(
-        P_LIDER       IN NUMBER,
-        P_SEDE        IN NUMBER,
-        P_NOMBRE      IN VARCHAR2,
-        P_FECHAYHORA  IN DATE,
-        P_DURACION    IN NUMBER,
-        P_ESTADO      IN VARCHAR2,
+        P_LIDER IN NUMBER,
+        P_SEDE IN NUMBER,
+        P_NOMBRE IN VARCHAR2,
+        P_FECHAYHORA IN DATE,
+        P_DURACION IN NUMBER,
+        P_ESTADO IN VARCHAR2,
         P_DESCRIPCION IN VARCHAR2
     ) IS
     BEGIN
-        INSERT INTO EVENTOS VALUES (
-                                       -1,
-                                       P_LIDER,
-                                       P_SEDE,
-                                       P_NOMBRE,
-                                       P_FECHAYHORA,
-                                       P_DURACION,
-                                       P_ESTADO,
-                                       P_DESCRIPCION
-                                   );
+        INSERT INTO EVENTOS
+        VALUES (-1,
+                P_LIDER,
+                P_SEDE,
+                P_NOMBRE,
+                P_FECHAYHORA,
+                P_DURACION,
+                P_ESTADO,
+                P_DESCRIPCION);
     END CREAR_EVENTO;
 
     PROCEDURE MODIFICAR_EVENTO(
-        P_ID          IN NUMBER,
-        P_LIDER       IN NUMBER,
-        P_SEDE        IN NUMBER,
-        P_NOMBRE      IN VARCHAR2,
-        P_FECHAYHORA  IN DATE,
-        P_DURACION    IN NUMBER,
-        P_ESTADO      IN VARCHAR2,
+        P_ID IN NUMBER,
+        P_LIDER IN NUMBER,
+        P_SEDE IN NUMBER,
+        P_NOMBRE IN VARCHAR2,
+        P_FECHAYHORA IN DATE,
+        P_DURACION IN NUMBER,
+        P_ESTADO IN VARCHAR2,
         P_DESCRIPCION IN VARCHAR2
     ) IS
     BEGIN
-        UPDATE EVENTOS SET
-                           LIDER = P_LIDER,
-                           SEDE = P_SEDE,
-                           NOMBRE = P_NOMBRE,
-                           FECHAYHORA = P_FECHAYHORA,
-                           DURACION = P_DURACION,
-                           ESTADO = P_ESTADO,
-                           DESCRIPCION = P_DESCRIPCION
+        UPDATE EVENTOS
+        SET LIDER       = P_LIDER,
+            SEDE        = P_SEDE,
+            NOMBRE      = P_NOMBRE,
+            FECHAYHORA  = P_FECHAYHORA,
+            DURACION    = P_DURACION,
+            ESTADO      = P_ESTADO,
+            DESCRIPCION = P_DESCRIPCION
         WHERE ID = P_ID;
     END MODIFICAR_EVENTO;
 
     PROCEDURE INSCRIBIR_EVENTO(P_USUARIO IN NUMBER, P_EVENTO IN NUMBER) IS
     BEGIN
-        INSERT INTO ASISTENTES VALUES (
-                                          P_USUARIO,
-                                          P_EVENTO
-                                      );
+        INSERT INTO ASISTENTES
+        VALUES (P_USUARIO,
+                P_EVENTO);
     END INSCRIBIR_EVENTO;
 END PKG_EVENTOS;
 
 CREATE OR REPLACE PACKAGE BODY PKG_MEMBRESIA AS
     PROCEDURE CREAR_TIPO_MEMBRESIA(
-        P_TIPO         IN VARCHAR2,
-        P_PRECIO       IN NUMBER,
+        P_TIPO IN VARCHAR2,
+        P_PRECIO IN NUMBER,
         P_DURACIONDIAS IN NUMBER,
-        P_DESCRIPCION  IN VARCHAR2
+        P_DESCRIPCION IN VARCHAR2
     ) IS
     BEGIN
-        INSERT INTO TIPOMEMBRESIA VALUES (
-                                             P_TIPO,
-                                             P_PRECIO,
-                                             P_DURACIONDIAS,
-                                             P_DESCRIPCION
-                                         );
+        INSERT INTO TIPOMEMBRESIA
+        VALUES (P_TIPO,
+                P_PRECIO,
+                P_DURACIONDIAS,
+                P_DESCRIPCION);
     END CREAR_TIPO_MEMBRESIA;
 
     FUNCTION CONSULTAR_TIPOS_MEMBRESIA RETURN SYS_REFCURSOR IS
@@ -521,17 +512,16 @@ CREATE OR REPLACE PACKAGE BODY PKG_MEMBRESIA AS
 
     PROCEDURE ASIGNAR_BENEFICIO_ZONA(
         P_TIPO_MEMBRESIA IN VARCHAR2,
-        P_ZONA           IN VARCHAR2,
-        P_SEDE           IN NUMBER,
-        P_DESCRIPCION    IN VARCHAR2
+        P_ZONA IN VARCHAR2,
+        P_SEDE IN NUMBER,
+        P_DESCRIPCION IN VARCHAR2
     ) IS
     BEGIN
-        INSERT INTO TIPOMEMBRESIA VALUES (
-                                             P_TIPO_MEMBRESIA,
-                                             P_ZONA,
-                                             P_SEDE,
-                                             P_DESCRIPCION
-                                         );
+        INSERT INTO TIPOMEMBRESIA
+        VALUES (P_TIPO_MEMBRESIA,
+                P_ZONA,
+                P_SEDE,
+                P_DESCRIPCION);
     END ASIGNAR_BENEFICIO_ZONA;
 
     FUNCTION CONSULTAR_BENEFICIO_ZONA(P_TIPO_MEMBRESIA IN VARCHAR2) RETURN SYS_REFCURSOR IS
@@ -544,7 +534,9 @@ CREATE OR REPLACE PACKAGE BODY PKG_MEMBRESIA AS
     FUNCTION CONSULTAR_FACTURA(P_MEMBRESIA_ID IN NUMBER) RETURN SYS_REFCURSOR IS
         FACTURA_RESULTADO SYS_REFCURSOR;
     BEGIN
-        OPEN FACTURA_RESULTADO FOR SELECT * FROM FACTURAS WHERE ID = (SELECT FACTURA FROM MEMBRESIAS WHERE ID = P_MEMBRESIA_ID);
+        OPEN FACTURA_RESULTADO FOR SELECT *
+                                   FROM FACTURAS
+                                   WHERE ID = (SELECT FACTURA FROM MEMBRESIAS WHERE ID = P_MEMBRESIA_ID);
         RETURN FACTURA_RESULTADO;
     END CONSULTAR_FACTURA;
 END PKG_MEMBRESIA;
@@ -552,30 +544,31 @@ END PKG_MEMBRESIA;
 CREATE OR REPLACE PACKAGE BODY PKG_ENTRADASALIDAS AS
     PROCEDURE REGISTRAR_ENTRADA(
         P_PERSONA IN NUMBER,
-        P_ZONA    IN VARCHAR2,
-        P_SEDE    IN NUMBER
+        P_ZONA IN VARCHAR2,
+        P_SEDE IN NUMBER
     ) IS
     BEGIN
-        INSERT INTO REGISTROENTRADASALIDAS VALUES (
-                                                      -1,
-                                                      P_PERSONA,
-                                                      P_ZONA,
-                                                      P_SEDE,
-                                                      SYSDATE,
-                                                      SYSTIMESTAMP,
-                                                      SYSTIMESTAMP
-                                                  );
+        INSERT INTO REGISTROENTRADASALIDAS
+        VALUES (-1,
+                P_PERSONA,
+                P_ZONA,
+                P_SEDE,
+                SYSDATE,
+                SYSTIMESTAMP,
+                SYSTIMESTAMP);
     END REGISTRAR_ENTRADA;
 
     PROCEDURE REGISTRAR_SALIDA(
         P_PERSONA IN NUMBER,
-        P_ZONA    IN VARCHAR2,
-        P_SEDE    IN NUMBER
+        P_ZONA IN VARCHAR2,
+        P_SEDE IN NUMBER
     ) IS
     BEGIN
-        UPDATE REGISTROENTRADASALIDAS SET
-            HORASALIDA = SYSTIMESTAMP
-        WHERE PERSONA = P_PERSONA AND ZONA = P_ZONA AND SEDE = P_SEDE;
+        UPDATE REGISTROENTRADASALIDAS
+        SET HORASALIDA = SYSTIMESTAMP
+        WHERE PERSONA = P_PERSONA
+          AND ZONA = P_ZONA
+          AND SEDE = P_SEDE;
     END REGISTRAR_SALIDA;
 
     FUNCTION CONSULTAR_ENTRADAS(P_PERSONA IN NUMBER) RETURN SYS_REFCURSOR IS
@@ -588,7 +581,9 @@ CREATE OR REPLACE PACKAGE BODY PKG_ENTRADASALIDAS AS
     FUNCTION CONSULTAR_SALIDAS(P_PERSONA IN NUMBER) RETURN SYS_REFCURSOR IS
         SALIDAS_RESULTADO SYS_REFCURSOR;
     BEGIN
-        OPEN SALIDAS_RESULTADO FOR SELECT * FROM REGISTROENTRADASALIDAS WHERE PERSONA = P_PERSONA AND HORASALIDA IS NOT NULL;
+        OPEN SALIDAS_RESULTADO FOR SELECT *
+                                   FROM REGISTROENTRADASALIDAS
+                                   WHERE PERSONA = P_PERSONA AND HORASALIDA IS NOT NULL;
         RETURN SALIDAS_RESULTADO;
     END CONSULTAR_SALIDAS;
 END PKG_ENTRADASALIDAS;
