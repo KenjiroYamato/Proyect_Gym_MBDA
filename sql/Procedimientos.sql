@@ -1,3 +1,5 @@
+--TODO: Eliminar cuando CrudI este listo
+
 CREATE OR REPLACE FUNCTION Membresia_Valida(IdUsuario NUMBER)
     RETURN BOOLEAN
     IS
