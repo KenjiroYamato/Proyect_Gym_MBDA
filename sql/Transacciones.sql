@@ -17,7 +17,7 @@ END;
 BEGIN
     SAVEPOINT Finalizar_Evento;
 
-    UPDATE EVENTO
+    UPDATE EVENTOS
     SET ESTADO = 'Finalizado'
     WHERE (FECHAYHORA + NUMTODSINTERVAL(DURACION, 'HOUR')) < SYSTIMESTAMP;
 
@@ -32,6 +32,7 @@ END;
 DECLARE
     estadoMembresia BOOLEAN;
 BEGIN
-    estadoMembresia := Acceso_ZONA(12345678901234, 1, 'Zona Principal'); -- Reemplaza 123 con el ID del usuario que deseas consultar.
+    estadoMembresia :=
+            PKG_USUARIOS.ACCESO_ZONA(12345678901234, 1, 'Zona Principal'); -- Reemplaza 123 con el ID del usuario que deseas consultar.
     DBMS_OUTPUT.put_line(CASE WHEN estadoMembresia THEN 'TRUE' ELSE 'FALSE' END);
 END;
