@@ -1,0 +1,58 @@
+alter session set "_oracle_script"=TRUE;
+
+--Creacion de Roles
+CREATE ROLE GymGerenteRole;
+
+CREATE ROLE GymAdminRole;
+
+CREATE ROLE GymRecepcionRole;
+
+CREATE ROLE GymUsuarioRole;
+
+--Creacion De Usuarios
+CREATE USER Gerencia IDENTIFIED BY gerencia DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP;
+GRANT GymGerenteRole TO Gerencia;
+GRANT UNLIMITED TABLESPACE TO Gerencia;
+
+CREATE USER Administracion IDENTIFIED BY administracion DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP;
+GRANT GymAdminRole TO Administracion;
+GRANT UNLIMITED TABLESPACE TO Administracion;
+
+CREATE USER Recepcion IDENTIFIED BY recepcion DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP;
+GRANT GymRecepcionRole TO Recepcion;
+GRANT UNLIMITED TABLESPACE TO Recepcion;
+
+CREATE USER Usuario IDENTIFIED BY usuario DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP;
+GRANT GymUsuarioRole TO Usuario;
+GRANT UNLIMITED TABLESPACE TO Usuario;
+
+--Asignacion de Permisos para Gerente
+GRANT CONNECT TO GymGerenteRole;
+GRANT CREATE SESSION TO GymGerenteRole;
+
+GRANT SELECT ANY TABLE TO GymGerenteRole;
+GRANT INSERT ANY TABLE TO GymGerenteRole;
+GRANT DELETE ANY TABLE TO GymGerenteRole;
+GRANT UPDATE ANY TABLE TO GymGerenteRole;
+
+GRANT EXECUTE ANY PROCEDURE TO GymGerenteRole;
+GRANT AUDIT ANY TO GymGerenteRole;
+GRANT SELECT_CATALOG_ROLE TO GymGerenteRole;
+
+GRANT REFERENCES ON Administracion.Zonas TO Gerencia;
+
+--Asignacion de Permisos para el Administrador
+GRANT CONNECT TO GymAdminRole;
+GRANT CREATE SESSION TO GymAdminRole;
+
+GRANT REFERENCES ON Gerencia.Empleados TO Administracion;
+GRANT REFERENCES ON Gerencia.EMPLEADOS TO Administracion;
+GRANT REFERENCES ON Gerencia.SEDES TO Administracion;
+GRANT REFERENCES ON Gerencia.USUARIOS TO Administracion;
+GRANT REFERENCES ON Gerencia.USUARIOS TO Administracion;
+GRANT REFERENCES ON Gerencia.SEDES TO Administracion;
+
+--Asignacion de Permisos para el Usuario
+GRANT CONNECT TO USUARIO;
+GRANT CREATE SESSION TO Usuario;
+GRANT REFERENCES ON Gerencia.USUARIOS TO Usuario;
