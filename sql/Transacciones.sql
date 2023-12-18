@@ -1,9 +1,9 @@
 BEGIN
-    LOCK TABLE MEMBRESIAS IN SHARE MODE;
+    LOCK TABLE Gerencia.MEMBRESIAS IN SHARE MODE;
 
     SAVEPOINT Verificar_Membresias;
 
-    UPDATE Membresias
+    UPDATE Gerencia.Membresias
     SET estatus = 'Finalizado'
     WHERE FechaFinal < SYSDATE;
 
@@ -17,7 +17,7 @@ END;
 BEGIN
     SAVEPOINT Finalizar_Evento;
 
-    UPDATE EVENTOS
+    UPDATE Administracion.EVENTOS
     SET ESTADO = 'Finalizado'
     WHERE (FECHAYHORA + NUMTODSINTERVAL(DURACION, 'HOUR')) < SYSTIMESTAMP;
 
