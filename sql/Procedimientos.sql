@@ -1,6 +1,6 @@
 --TODO: Eliminar cuando CrudI este listo
 
-CREATE OR REPLACE FUNCTION Membresia_Valida(IdUsuario NUMBER)
+CREATE OR REPLACE FUNCTION ADMINISTRACION.Membresia_Valida(IdUsuario NUMBER)
     RETURN BOOLEAN
     IS
     estatus_usuario VARCHAR2(25);
@@ -19,7 +19,7 @@ EXCEPTION
         RETURN False;
 END Membresia_Valida;
 
-CREATE OR REPLACE FUNCTION Acceso_Zona(idUsuario NUMBER, sede_actual NUMBER, zona_actual VARCHAR2)
+CREATE OR REPLACE FUNCTION ADMINISTRACION.Acceso_Zona(idUsuario NUMBER, sede_actual NUMBER, zona_actual VARCHAR2)
     RETURN BOOLEAN
     IS
     existe_beneficio VARCHAR2(1);
@@ -27,10 +27,10 @@ CREATE OR REPLACE FUNCTION Acceso_Zona(idUsuario NUMBER, sede_actual NUMBER, zon
 BEGIN
     SELECT TIPO
     INTO tipo_membresia_
-    FROM MEMBRESIAS
+    FROM Gerencia.MEMBRESIAS
     WHERE USUARIO = idUsuario;
 
-    SELECT 1 INTO existe_beneficio FROM BENEFICIOZONAS
+    SELECT 1 INTO existe_beneficio FROM Gerencia.BENEFICIOZONAS
     WHERE TIPO_MEMBRESIA = tipo_membresia_ AND SEDE = sede_actual AND ZONA = zona_actual;
 
     IF NOT Membresia_Valida(idUsuario) THEN
