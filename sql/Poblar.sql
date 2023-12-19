@@ -1,47 +1,72 @@
 --Instancias minimas para el funcionamiento de un gimnacio
 
 INSERT INTO Gerencia.LUGARES (ID, PAIS, REGION, CIUDAD, DIRECCION, DETALLES, CODIGOPOSTAL)
-VALUES (0, 'Colombia', 'Cundinamarca', 'Bogota', 'Avenida Jimenez 2-10', 'Gimnacio La Papa', '110011');
+VALUES (0, 'Colombia', 'Cundinamarca', 'Bogota', 'Avenida Jimenez 2-10', 'Gimnasio La Papa', '110011');
 
 INSERT INTO Gerencia.SEDES (ID, NOMBRE, UBICACION)
 SELECT 1, 'Gimnacio La Papa', ID  FROM GERENCIA.LUGARES
-WHERE DETALLES = 'Gimnacio la Gym La Papa' AND ROWNUM = 1;
+WHERE DETALLES = 'Gimnasio La Papa' AND ROWNUM = 1;
 
 INSERT INTO Administracion.ZONAS (NOMBRE, SEDE, DESCRIPCION)
 VALUES ('Zona Principal', 1, 'Zona General');
 INSERT INTO Administracion.ZONAS (NOMBRE, SEDE, DESCRIPCION)
 VALUES ('Zona Piscina', 1, 'Zona con Piscina de 50000L');
+INSERT INTO Administracion.ZONAS (NOMBRE, SEDE, DESCRIPCION)
+VALUES ('Zona Cardio', 1, 'Zona con Maquinas de cardio especializadas');
+INSERT INTO Administracion.ZONAS (NOMBRE, SEDE, DESCRIPCION)
+VALUES ('Zona Canchas', 1, 'Zona con Canchas de futbol, tennis y boley');
 
-INSERT INTO Gerencia.TIPOMEMBRESIA (TIPO, PRECIO, DURACIONDIAS, DESCRIPCION)
-VALUES ('MEM_BASICA_1', 50000.00, 30, 'Descripción de Membresia Basica');
-INSERT INTO Gerencia.TIPOMEMBRESIA (TIPO, PRECIO, DURACIONDIAS, DESCRIPCION)
-VALUES ('MEM_PISCINA_1', 75000.00, 45, 'Descripción de Membresia Basica Piscina');
+--SIGUE TIPO MEMBRESIA en Gerencia.TIPOMEMBRESIA.SQL
 
 INSERT INTO Gerencia.BENEFICIOSEDES (TIPO_MEMBRESIA, SEDE, DESCRIPCION)
 VALUES ('MEM_BASICA_1', 1, 'Descripcion');
 INSERT INTO Gerencia.BENEFICIOSEDES (TIPO_MEMBRESIA, SEDE, DESCRIPCION)
-VALUES ('MEM_PISCINA_1', 1, 'Descripcion');
+VALUES ('MEM_BASICA_2', 1, 'Descripcion');
+INSERT INTO Gerencia.BENEFICIOSEDES (TIPO_MEMBRESIA, SEDE, DESCRIPCION)
+VALUES ('MEM_PISCINA', 1, 'Descripcion');
+INSERT INTO Gerencia.BENEFICIOSEDES (TIPO_MEMBRESIA, SEDE, DESCRIPCION)
+VALUES ('MEM_PREMIUM', 1, 'Descripcion');
+INSERT INTO Gerencia.BENEFICIOSEDES (TIPO_MEMBRESIA, SEDE, DESCRIPCION)
+VALUES ('MEM_FULL', 1, 'Descripcion');
 
+
+-- Beneficios para la membresía MEM_BASICA_1
 INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
-VALUES ('MEM_BASICA_1', 'Zona Principal', 1, 'Descripcion');
+VALUES ('MEM_BASICA_1', 'Zona Principal', 1, 'Acceso a Zona General');
+
+-- Beneficios para la membresía MEM_BASICA_2
 INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
-VALUES ('MEM_PISCINA_1', 'Zona Piscina', 1, 'Descripcion');
+VALUES ('MEM_BASICA_2', 'Zona Principal', 1, 'Acceso a Zona General');
+INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
+VALUES ('MEM_BASICA_2', 'Zona Cardio', 1, 'Acceso a Zona con Máquinas de Cardio');
 
-INSERT INTO Gerencia.EMPLEADOS (DOCUMENTO, TIPODOCUMENTO, CORREO, TELEFONO, FECHANACIMIENTO, NOMBRE, APELLIDO, GENERO, EDAD,
-                       SEDE, ESTATUS, CARGO)
-VALUES (100000000, 'Cedula', 'juanperez@gmail.com', '3000123456', DATE '2000-01-01', 'Juan', 'Perez', 'Masculino', 23,
-        1, 'Activo', 'Operador');
-INSERT INTO Gerencia.EMPLEADOS (DOCUMENTO, TIPODOCUMENTO, CORREO, TELEFONO, FECHANACIMIENTO, NOMBRE, APELLIDO, GENERO, EDAD,
-                       SEDE, ESTATUS, CARGO)
-VALUES (1000000002, 'Pasaporte', 'marialopez@hotmail.com', '3111234567', DATE '1999-02-02', 'Maria', 'Lopez',
-        'Femenino', 24, 1, 'Activo', 'Entrenador');
+-- Beneficios para la membresía MEM_PISCINA
+INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
+VALUES ('MEM_PISCINA', 'Zona Principal', 1, 'Acceso a Zona General y Piscina');
+INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
+VALUES ('MEM_PISCINA', 'Zona Piscina', 1, 'Acceso a Zona con Piscina');
 
-INSERT INTO Gerencia.CONTRATOS (ID, EMPLEADO, TIPOCONTRATO, FECHAINICIO, FECHAFINAL, SUELDO, DESCRIPCION, ESTADO)
-SELECT 0, DOCUMENTO, 'Fijo', DATE '2023-01-01', DATE '2024-01-01', 1230000.10, 'descripcion', 'Activo' FROM Gerencia.EMPLEADOS
-WHERE NOMBRE = 'Juan' AND APELLIDO = 'Perez';
-INSERT INTO Gerencia.CONTRATOS (ID, EMPLEADO, TIPOCONTRATO, FECHAINICIO, FECHAFINAL, SUELDO, DESCRIPCION, ESTADO)
-SELECT 0, DOCUMENTO, 'Indefinido', DATE '2022-01-01', null, 123000.10, 'descripcion2', 'Activo' FROM Gerencia.EMPLEADOS
-WHERE NOMBRE = 'Maria' AND APELLIDO = 'Lopez';
+-- Beneficios para la membresía MEM_PREMIUM
+INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
+VALUES ('MEM_PREMIUM', 'Zona Principal', 1, 'Acceso a Zona General y Piscina');
+INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
+VALUES ('MEM_PREMIUM', 'Zona Cardio', 1, 'Acceso a Zona con Máquinas de Cardio');
+INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
+VALUES ('MEM_PREMIUM', 'Zona Canchas', 1, 'Acceso a Zona con Canchas de futbol, tennis y boley');
+
+-- Beneficios para la membresía MEM_FULL
+INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
+VALUES ('MEM_FULL', 'Zona Principal', 1, 'Acceso a Zona General y Piscina');
+INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
+VALUES ('MEM_FULL', 'Zona Piscina', 1, 'Acceso a Zona con Piscina');
+INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
+VALUES ('MEM_FULL', 'Zona Cardio', 1, 'Acceso a Zona con Máquinas de Cardio');
+INSERT INTO Gerencia.BENEFICIOZONAS (TIPO_MEMBRESIA, ZONA, SEDE, DESCRIPCION)
+VALUES ('MEM_FULL', 'Zona Canchas', 1, 'Acceso a Zona con Canchas de futbol, tennis y boley');
+
+--SIGEN LOS EMPLEADOS EN GERENCIA.EMPLEADOS.SQL
+
+--SIGUEN SUS CONTRATOS EN GERENCIA.CONTRATOS.SQL
 
 -- Final de las instancias minimas
 
