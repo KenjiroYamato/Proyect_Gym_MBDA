@@ -71,7 +71,9 @@ ALTER TABLE Gerencia.EMPLEADOS
 -- Tabla INVENTARIO
 ALTER TABLE Administracion.INVENTARIO
     ADD CONSTRAINT CHK_INVENTARIO_PRECIO CHECK (PRECIO >= 0);
-
+ALTER TABLE Administracion.INVENTARIO
+    ADD CONSTRAINT CHK_TIPO_INVENTARIO CHECK (TIPO IN
+                                             ('Moviliario', 'Equipamineto', 'Accesorios', 'Consumibles', 'Limpieza', 'Otros'));
 -- Tabla MAQUINAS
 ALTER TABLE Administracion.MAQUINAS
     ADD CONSTRAINT CHK_MAQUINA_ESTADO CHECK (ESTADO IN
