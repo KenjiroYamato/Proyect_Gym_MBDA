@@ -53,22 +53,31 @@ CREATE OR REPLACE TRIGGER TGR_BEFORE_INSERT_MEMBRESIAS
     ON Gerencia.MEMBRESIAS
     FOR EACH ROW
 DECLARE
-    valor_Membresia NUMBER(10, 5);
-    id_Factura      NUMBER(10);
-    id_Membresia    NUMBER(10);
-    momento_pago    Timestamp;
+    valor_Membresia   NUMBER(10, 5);
+    id_Factura        NUMBER(10);
+    id_Membresia      NUMBER(10);
+    dias_de_membresia NUMBER(5);
 BEGIN
+    SELECT DURACIONDIAS INTO dias_de_membresia FROM Gerencia.TIPOMEMBRESIA
+        WHERE TIPO = :NEW.TIPO AND ROWNUM = 1;
 
-    SELECT Gerencia.Seq_UID_Facturas_Membresias.nextval INTO id_Membresia FROM dual;
-    SELECT Gerencia.Seq_UID_Facturas_Membresias.currval INTO id_Factura FROM dual;
+    IF :NEW.FECHAINICIO IS NULL THEN :NEW.FECHAINICIO := TRUNC(SYSDATE); END IF;
 
-    :NEW.ID := id_Membresia;
-    :NEW.Factura := id_Factura;
+    :NEW.FECHAFINAL := TRUNC(SYSDATE) + dias_de_membresia;
 
     SELECT PRECIO
     INTO valor_membresia
     FROM Gerencia.TIPOMEMBRESIA
     WHERE Gerencia.TIPOMEMBRESIA.TIPO = :NEW.Tipo;
+
+    IF :NEW.ESTATUS IS NULL THEN :NEW.ESTATUS := 'Activo'; END IF;
+
+    --Autogeneracion de la Factura
+    SELECT Gerencia.Seq_UID_Facturas_Membresias.nextval INTO id_Membresia FROM dual;
+    SELECT Gerencia.Seq_UID_Facturas_Membresias.currval INTO id_Factura FROM dual;
+
+    :NEW.ID := id_Membresia;
+    :NEW.Factura := id_Factura;
 
     INSERT INTO Gerencia.FACTURAS (ID, VALOR, DETALLES, MOMENTOPAGO)
     VALUES (id_Factura, valor_Membresia, 'Sin Novedades.', SYSTIMESTAMP);
