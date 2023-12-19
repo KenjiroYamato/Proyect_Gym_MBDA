@@ -20,6 +20,8 @@ GRANT EXECUTE ANY PROCEDURE TO GymGerenteRole;
 GRANT AUDIT ANY TO GymGerenteRole;
 GRANT SELECT_CATALOG_ROLE TO GymGerenteRole;
 
+GRANT EXECUTE ON ADMINISTRACION.Acceso_Zona TO GymGerenteRole;
+
 --_________________________________________________Asignacion de Permisos para el Schema Administracion______________
 GRANT CONNECT TO GymAdminRole;
 GRANT CREATE SESSION TO GymAdminRole;
