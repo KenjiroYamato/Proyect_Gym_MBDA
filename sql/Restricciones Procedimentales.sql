@@ -26,21 +26,21 @@ BEGIN
 END;
 
 
-CREATE OR REPLACE TRIGGER TGR_NO_PUEDEN_EXISTIR_2_OPERADORES
-    BEFORE INSERT OR UPDATE
-    ON Gerencia.EMPLEADOS
-    FOR EACH ROW
-DECLARE
-    operador_por_sede NUMBER(1);
-BEGIN
-    IF 'Operador' = :NEW.CARGO THEN
-        SELECT COUNT(*) INTO operador_por_sede FROM Gerencia.EMPLEADOS WHERE CARGO = 'Operador' AND SEDE = :NEW.SEDE;
-
-        IF operador_por_sede > 0 THEN
-            RAISE_APPLICATION_ERROR(-20004, 'Solo Puede haber un Operador por Sede');
-        end if;
-    end if;
-END;
+-- CREATE OR REPLACE TRIGGER TGR_NO_PUEDEN_EXISTIR_2_OPERADORES
+--     BEFORE INSERT OR UPDATE
+--     ON Gerencia.EMPLEADOS
+--     FOR EACH ROW
+-- DECLARE
+--     operador_por_sede NUMBER(1);
+-- BEGIN
+--     IF 'Operador' = :NEW.CARGO THEN
+--         SELECT COUNT(*) INTO operador_por_sede FROM Gerencia.EMPLEADOS WHERE CARGO = 'Operador' AND SEDE = :NEW.SEDE;
+--
+--         IF operador_por_sede > 0 THEN
+--             RAISE_APPLICATION_ERROR(-20004, 'Solo Puede haber un Operador por Sede');
+--         end if;
+--     end if;
+-- END;
 
 CREATE SEQUENCE Gerencia.Seq_UID_Facturas_Membresias
     START WITH 100000
@@ -53,7 +53,7 @@ CREATE OR REPLACE TRIGGER TGR_BEFORE_INSERT_MEMBRESIAS
     ON Gerencia.MEMBRESIAS
     FOR EACH ROW
 DECLARE
-    valor_Membresia   NUMBER(10, 5);
+    valor_Membresia   NUMBER(15, 5);
     id_Factura        NUMBER(10);
     id_Membresia      NUMBER(10);
     dias_de_membresia NUMBER(5);
@@ -63,7 +63,7 @@ BEGIN
 
     IF :NEW.FECHAINICIO IS NULL THEN :NEW.FECHAINICIO := TRUNC(SYSDATE); END IF;
 
-    :NEW.FECHAFINAL := TRUNC(SYSDATE) + dias_de_membresia;
+    :NEW.FECHAFINAL := :NEW.FECHAINICIO + dias_de_membresia;
 
     SELECT PRECIO
     INTO valor_membresia
